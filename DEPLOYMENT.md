@@ -32,5 +32,6 @@ Your URL will look like:
 
 ## Notes / Limits
 - Model weights download on first run: The first visitor run may take longer (YOLO weights download).
-- URL input downloading depends on `yt-dlp` and can fail for some streaming providers; uploading a file is the most reliable.
+- On Streamlit Community Cloud you typically **cannot install system packages** like `ffmpeg` (so `packages.txt` is for Hugging Face Spaces, not Streamlit Cloud).
+- URL input downloading depends on `yt-dlp` and may fail without `ffmpeg` or for some streaming providers; **uploading a file** in the app is the most reliable.
 - For faster demos, use **Max frames** in the app settings.
