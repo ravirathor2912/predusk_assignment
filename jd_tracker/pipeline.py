@@ -91,7 +91,10 @@ def run_tracking(
     if not writer.isOpened():
         raise RuntimeError("Could not create output video writer")
 
-    screenshot_indices = _pick_screenshot_indices(total_frames, int(save_screenshots))
+    effective_total = total_frames
+    if max_frames is not None and max_frames > 0:
+        effective_total = min(total_frames, max_frames) if total_frames else max_frames
+    screenshot_indices = _pick_screenshot_indices(effective_total, int(save_screenshots))
 
     rows: list[dict] = []
     frame_idx = 0

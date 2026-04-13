@@ -1,23 +1,23 @@
 # Short Technical Report (1–2 pages)
 
 ## Video source
-- Public source link: <PASTE LINK HERE>
+- Public source link: <PASTE YOUR PUBLIC VIDEO LINK HERE>
 - Video title/channel/event: <FILL>
-- Why this video: <multi-subject motion, occlusions, camera movement, etc>
+- Why this video: Multiple moving subjects with occlusions and camera motion.
 
 ## Approach
 ### Detector
 - Model: YOLOv8 (Ultralytics), default `yolov8n.pt` (configurable)
-- Target classes: <e.g., person/players>
-- Key settings: confidence threshold, image size
+- Target classes: COCO class `0` (person) for players/officials
+- Key settings used: `conf=0.25`, `imgsz=640`, `iou=0.5`
 
 ### Tracker
 - Tracker: BoT-SORT (via Ultralytics tracking)
 - Why this tracker: robust association under occlusions and camera motion; uses motion + appearance cues (depending on config)
 
 ## Pipeline design
-1. (Optional) Download from URL using `yt-dlp`
-2. Run `YOLO.track(...)` on the video
+1. Download the public video to a local file
+2. Run `YOLO.track(...)` on the local video
 3. For each frame:
    - extract boxes, confidences, classes, **track IDs**
    - draw bounding boxes + `ID:<n>` labels
@@ -44,3 +44,8 @@
 - Tune tracker parameters / ReID settings (if enabled)
 - Add sport-specific fine-tuning or segmentation
 - Optional evaluation: manually label a short segment and compute IDF1/MOTA
+
+## Run command used (for reproducibility)
+For long videos, process a short segment first (e.g., 600–1800 frames):
+
+`python track.py --source "path\\to\\video.mp4" --run-name submission_run --classes 0 --tracker botsort --imgsz 640 --conf 0.25 --iou 0.5 --max-frames 900 --save-screenshots 5`

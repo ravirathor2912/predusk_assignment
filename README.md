@@ -22,7 +22,6 @@ pip install -r requirements.txt
 
 Notes:
 - First run will download YOLO weights (e.g. `yolov8n.pt`).
-- If you use YouTube/streaming URLs, `yt-dlp` may need **ffmpeg** installed and on PATH.
 - Tracking depends on `lap` (included in `requirements.txt`).
 
 ## Quick sanity test (no internet)
@@ -37,20 +36,12 @@ python scripts/generate_synthetic_video.py --out outputs/synth.mp4
 ```
 
 ## Run on a real public video
-### Option A: Local file
+### Local file
 ```bash
 python track.py --source path\\to\\your_video.mp4 --run-name my_run
 ```
 
-### Option B: Public URL
-```bash
-python track.py --source "https://..." --run-name my_run
-```
-You can also download first:
-```bash
-python scripts/download_video.py --url "https://..." --out-dir outputs/download
-```
-If URL download fails, download the video yourself (keeping the public link for the submission) and run using Option A.
+Keep the public source link in your report, but run the pipeline on a downloaded local video file.
 
 ## Common settings
 - Track people only (COCO class 0):

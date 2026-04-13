@@ -15,15 +15,7 @@ st.title("Multi-Object Detection + Persistent ID Tracking")
 
 st.write("Upload a video (or provide a public URL), then run detection + tracking and download the annotated result.")
 
-source_mode = st.radio("Input", ["Upload video", "Public URL"], horizontal=True)
-
-uploaded = None
-url = ""
-
-if source_mode == "Upload video":
-    uploaded = st.file_uploader("Video file", type=["mp4", "mov", "mkv", "avi"])
-else:
-    url = st.text_input("Public video URL", placeholder="https://...")
+uploaded = st.file_uploader("Video file", type=["mp4", "mov", "mkv", "avi"])
 
 with st.expander("Settings", expanded=True):
     col1, col2 = st.columns(2)
@@ -57,11 +49,8 @@ def _parse_classes(s: str) -> list[int] | None:
 
 
 if run_btn:
-    if source_mode == "Upload video" and uploaded is None:
+    if uploaded is None:
         st.error("Please upload a video file.")
-        st.stop()
-    if source_mode == "Public URL" and not url.strip():
-        st.error("Please paste a public URL.")
         st.stop()
 
     run_id = uuid4().hex[:8]
@@ -69,12 +58,9 @@ if run_btn:
 
     with st.spinner("Running detection + tracking (this can take a while)..."):
         with tempfile.TemporaryDirectory() as td:
-            if source_mode == "Upload video":
-                in_path = Path(td) / uploaded.name
-                in_path.write_bytes(uploaded.getbuffer())
-                source = str(in_path)
-            else:
-                source = url.strip()
+            in_path = Path(td) / uploaded.name
+            in_path.write_bytes(uploaded.getbuffer())
+            source = str(in_path)
 
             outputs = run_tracking(
                 source=source,
